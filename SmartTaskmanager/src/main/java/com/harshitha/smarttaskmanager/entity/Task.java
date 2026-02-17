@@ -2,7 +2,11 @@ package com.harshitha.smarttaskmanager.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Data
@@ -20,6 +24,8 @@ public class Task {
 
     @NotBlank(message = "Description cannot be empty")
     private String description;
+    private LocalDate dueDate;
+    private LocalTime dueTime;
 
     private boolean completed;
 }
