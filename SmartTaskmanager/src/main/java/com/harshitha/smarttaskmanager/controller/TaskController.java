@@ -1,4 +1,4 @@
-package com.harshitha.smarttaskmanager.conntroller;
+package com.harshitha.smarttaskmanager.controller;
 
 import com.harshitha.smarttaskmanager.entity.Task;
 import com.harshitha.smarttaskmanager.service.TaskService;
