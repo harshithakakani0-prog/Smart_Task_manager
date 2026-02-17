@@ -2,9 +2,11 @@ package com.harshitha.smarttaskmanager.repository;
 
 import com.harshitha.smarttaskmanager.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
+
+    // Sort by Date first, then Time
+    List<Task> findAllByOrderByDueDateAscDueTimeAsc();
 
 }
