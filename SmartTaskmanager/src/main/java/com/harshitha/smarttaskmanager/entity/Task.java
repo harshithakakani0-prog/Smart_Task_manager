@@ -1,39 +1,41 @@
 package com.harshitha.smarttaskmanager.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "task")
+@Table(name = "tasks")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
     private String description;
 
-    private LocalDate dueDate;
-    private LocalTime dueTime;
+    // ✅ Date + Time together
+    @Column(nullable = false)
+    private LocalDateTime dueDate;
 
-    private boolean completed;
+    private boolean completed = false;
 
-    // Constructors
+    // ✅ prevents duplicate reminders
+    private boolean notificationSent = false;
+
+    // ✅ optional: for tracking creation time (professional)
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     public Task() {}
 
-    public Task(String title, String description,
-                LocalDate dueDate, LocalTime dueTime,
-                boolean completed) {
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.dueTime = dueTime;
-        this.completed = completed;
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -43,12 +45,15 @@ public class Task {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public LocalDate getDueDate() { return dueDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
-
-    public LocalTime getDueTime() { return dueTime; }
-    public void setDueTime(LocalTime dueTime) { this.dueTime = dueTime; }
+    public LocalDateTime getDueDate() { return dueDate; }
+    public void setDueDate(LocalDateTime dueDate) { this.dueDate = dueDate; }
 
     public boolean isCompleted() { return completed; }
     public void setCompleted(boolean completed) { this.completed = completed; }
+
+    public boolean isNotificationSent() { return notificationSent; }
+    public void setNotificationSent(boolean notificationSent) { this.notificationSent = notificationSent; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

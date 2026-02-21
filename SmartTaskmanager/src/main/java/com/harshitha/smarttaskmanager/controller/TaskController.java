@@ -2,52 +2,48 @@ package com.harshitha.smarttaskmanager.controller;
 
 import com.harshitha.smarttaskmanager.entity.Task;
 import com.harshitha.smarttaskmanager.service.TaskService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/tasks")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/tasks")
+@RequiredArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
 
-    // Constructor Injection
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
-
-    // ✅ Create Task
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+    public ResponseEntity<Task> createTask(@RequestBody Task task) {
+        return ResponseEntity.ok(taskService.createTask(task));
     }
 
-    // ✅ Get All Tasks Sorted by Date & Time
-    @GetMapping("/sorted")
-    public List<Task> getAllTasksSorted() {
-        return taskService.getAllTasksSorted();
+    @GetMapping
+    public ResponseEntity<List<Task>> getAllTasksSorted() {
+        return ResponseEntity.ok(taskService.getAllTasksSorted());
     }
 
-    // ✅ Get Task By ID
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
-    // ✅ Update Task
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id,
-                           @RequestBody Task task) {
-        return taskService.updateTask(id, task);
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+        return ResponseEntity.ok(taskService.updateTask(id, task));
     }
 
-    // ✅ Delete Task
-    // ✅ Delete Task
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<Task> markCompleted(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.markCompleted(id));
+    }
+
     @DeleteMapping("/{id}")
-    public String deleteTask(@PathVariable Long id) {
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
-        return "Task deleted successfully!";
+        return ResponseEntity.ok("Task deleted successfully");
     }
 }
