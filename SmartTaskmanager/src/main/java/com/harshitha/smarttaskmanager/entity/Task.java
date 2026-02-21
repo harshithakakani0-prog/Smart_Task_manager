@@ -1,7 +1,11 @@
 package com.harshitha.smarttaskmanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 @Entity
 @Table(name = "tasks")
@@ -17,7 +21,7 @@ public class Task {
     private String description;
 
     // ✅ Date + Time together
-    @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dueDate;
 
     private boolean completed = false;

@@ -1,39 +1,27 @@
 package com.harshitha.smarttaskmanager.scheduler;
 
-import com.harshitha.smarttaskmanager.repository.TaskRepository;
+import com.harshitha.smarttaskmanager.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class TaskCleanupScheduler {
 
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    // ==========================================================
-    // ✅ 1. Delete completed tasks DAILY at 2 AM
-    // ==========================================================
+    // ✅ daily 2 AM delete completed tasks
     @Scheduled(cron = "0 0 2 * * *")
     public void deleteCompletedTasksDaily() {
-        taskRepository.deleteByCompletedTrue();
-        System.out.println("🧹 Auto-deleted completed tasks (2 AM cleanup)");
+        taskService.deleteCompletedTasks();
+        System.out.println("🧹 Auto-deleted completed tasks");
     }
 
-    // ==========================================================
-    // ✅ 2. Delete expired tasks (due time passed)
-    // Runs every 1 minute
-    // Grace time: 1 minute
-    // ==========================================================
+    // ✅ every 1 minute delete expired tasks
     @Scheduled(fixedRate = 60000)
     public void deleteExpiredTasksAutomatically() {
-
-        LocalDateTime nowMinus1Min = LocalDateTime.now().minusMinutes(1);
-
-        taskRepository.deleteByCompletedFalseAndDueDateBefore(nowMinus1Min);
-
-        System.out.println("⏳ Auto-deleted expired tasks (due time passed)");
+        taskService.deleteExpiredTasks();
+        System.out.println("⏳ Auto-deleted expired tasks");
     }
 }

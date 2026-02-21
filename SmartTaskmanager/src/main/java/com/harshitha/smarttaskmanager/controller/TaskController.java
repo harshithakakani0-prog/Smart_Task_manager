@@ -16,31 +16,31 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    // ✅ Create
     @PostMapping
     public ResponseEntity<Task> createTask(@RequestBody Task task) {
         return ResponseEntity.ok(taskService.createTask(task));
     }
 
+    // ✅ Get all (sorted)
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasksSorted() {
         return ResponseEntity.ok(taskService.getAllTasksSorted());
     }
 
+    // ✅ Get by id
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
+    // ✅ Update (React uses this for toggle complete also)
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
         return ResponseEntity.ok(taskService.updateTask(id, task));
     }
 
-    @PutMapping("/{id}/complete")
-    public ResponseEntity<Task> markCompleted(@PathVariable Long id) {
-        return ResponseEntity.ok(taskService.markCompleted(id));
-    }
-
+    // ✅ Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
